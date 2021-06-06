@@ -1,0 +1,159 @@
+:root {
+  font-size: 62.5%;
+  /* box-sizing: border-box; */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f3f3f3;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+header {
+  width: 100%;
+  height: 6rem;
+  background: #ffcd00;
+}
+
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container .logo {
+  height: 6rem;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+}
+
+.container .logo img {
+  height: 5rem;
+}
+
+[data-menu="button"] {
+  display: flex;
+  border: none;
+  background-color: initial;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-family: monospace;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  margin: 10px;
+  align-items: center;
+  position: relative;
+  z-index: 300;
+}
+
+[data-menu="button"]::before {
+  margin-right: 4px;
+  content: "";
+  display: inline-block;
+  height: 4px;
+  width: 30px;
+  background-color: #000;
+  box-shadow: 0 8px #000, 0 -8px #000;
+  transition: transform 0.3s;
+}
+
+[data-menu="button"].active::before {
+  transform: rotate(90deg);
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 24.5rem;
+  margin: 2rem auto;
+  padding: 2rem 4rem;
+  background: #fff;
+}
+
+.product-item .short-images {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-item .short-images img {
+  width: 5rem;
+  height: 5rem;
+
+  margin-bottom: 1.5rem;
+}
+
+.product-item .short-images img:last-child {
+  margin-bottom: 0;
+}
+
+.product-item .cover-image img {
+  width: 24.5rem;
+  height: 24.5rem;
+  margin: 0 auto;
+}
+
+.product-item .item-info {
+  width: 40rem;
+}
+
+.product-item .item-info h2 {
+  font-size: 2.5rem;
+}
+
+.product-item .price-info {
+  margin-top: 4rem;
+  display: flex;
+  align-items: center;
+}
+
+.product-item .price-info p:first-child {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #22b14c;
+}
+
+.product-item .price-info p:first-child span {
+  font-size: 2.6rem;
+}
+
+.product-item .price-info p:last-child {
+  font-size: 1.6rem;
+}
+
+.product-item .price-info p:last-child span {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #22b14c;
+}
+
+.product-item .add-button {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-item .add-button button {
+  width: 80%;
+  height: 3.5rem;
+  border: none;
+  background: #22b14c;
+  color: #fff;
+  font-size: 1.6rem;
+}
