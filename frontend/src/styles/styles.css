@@ -1,6 +1,6 @@
 :root {
   font-size: 62.5%;
-  /* box-sizing: border-box; */
+  box-sizing: border-box;
 }
 
 * {
@@ -46,6 +46,7 @@ header .container {
   border: none;
   background-color: initial;
   padding: 0.5rem 1rem;
+  padding-right: 0;
   border-radius: 4px;
   text-transform: uppercase;
   font-family: monospace;
@@ -53,13 +54,14 @@ header .container {
   color: #000;
   cursor: pointer;
   margin: 10px;
+  margin-right: 0;
   align-items: center;
   position: relative;
   z-index: 300;
 }
 
 [data-menu="button"]::before {
-  margin-right: 4px;
+  /* margin-right: 4px; */
   content: "";
   display: inline-block;
   height: 4px;
@@ -156,4 +158,109 @@ header .container {
   background: #22b14c;
   color: #fff;
   font-size: 1.6rem;
+}
+
+/* Mobile */
+@media (max-width: 1040px) {
+  :root {
+    font-size: 56.25%;
+  }
+
+  .container {
+    width: 90%;
+  }
+
+  .product-item .cover-image img {
+    width: 30rem;
+    height: 24rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .product-item .cover-image {
+    padding: 0 2rem;
+  }
+
+  .product-item .cover-image img {
+    width: 25rem;
+    height: 20rem;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    font-size: 50%;
+  }
+
+  .product-item {
+    height: 18rem;
+    margin: 2rem auto;
+    padding: 2rem 4rem;
+    background: #fff;
+  }
+
+  .product-item .short-images {
+    display: none;
+  }
+
+  .product-item .cover-image {
+    padding-right: 5rem;
+  }
+
+  .product-item .cover-image img {
+    width: 20rem;
+    height: 13.7rem;
+  }
+
+  .product-item .item-info {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 650px) {
+  :root {
+    font-size: 43.75%;
+  }
+}
+
+@media (max-width: 550px) {
+  :root {
+    font-size: 37.5%;
+  }
+}
+
+@media (max-width: 500px) {
+  .product-item .cover-image {
+    display: none;
+  }
+}
+
+@media (max-width: 350px) {
+  .product-item .price-info {
+    width: 100%;
+    margin-top: 2rem;
+    flex-direction: column;
+  }
+
+  .product-item .price-info .price {
+    width: 100%;
+    margin: 1.5rem 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-item .price-info .price p:first-child {
+    padding-right: 1.5rem;
+  }
+
+  .product-item .add-button {
+    width: 100%;
+  }
+
+  .product-item .add-button button {
+    width: 60%;
+  }
 }
