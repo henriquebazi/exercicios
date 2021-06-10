@@ -158,6 +158,7 @@ header .container {
   background: #22b14c;
   color: #fff;
   font-size: 1.6rem;
+  cursor: pointer;
 }
 
 /* Mobile */

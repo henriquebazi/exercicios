@@ -24,7 +24,6 @@ const getHtml = async (url) => {
       return acc += `<img src="${image}">`
     }, '')  
     
-    console.log(imagesUrl)
     const html = `
       <div class="product-item">
         <div class="short-images">
@@ -68,3 +67,73 @@ const setHtmlProducts = async () => {
 document.addEventListener("DOMContentLoaded", () => {
   setHtmlProducts()
 })
+
+/* Shop Cart */
+const shopSet = async () => {
+  let carts = document.querySelectorAll('.btn-add')
+  let products = []
+
+  const myProducts = await fetchUrl('http://localhost:5566/items')
+  
+  myProducts.forEach(({product}) => {
+    products.push(product)
+  })
+  
+  console.log(products)
+
+  for (let i = 0; i < carts.length; i++) {
+    carts[i].addEventListener('click', () => {
+      cartNumbers(products[i])
+    })
+  }
+
+  const onLoadCartNumbers = () => {
+    let productsNumbers = localStorage.getItem('cartNumbers')
+
+    if (productsNumbers) {
+      document.querySelector('.menu .cart').textContent = productsNumbers
+    }
+  }
+
+  onLoadCartNumbers()
+
+  const cartNumbers = product => {
+    let productsNumbers = localStorage.getItem('cartNumbers')
+    productsNumbers = parseInt(productsNumbers)
+
+    if (productsNumbers) {
+      localStorage.setItem('cartNumbers', productsNumbers + 1)
+      document.querySelector('.menu .cart').textContent = productsNumbers + 1
+    } else {
+      localStorage.setItem('cartNumbers', 1)
+      document.querySelector('.menu .cart').textContent = 1
+    }
+
+    setItens(product)
+  }
+
+  const setItens = product => {
+    let cartItems = localStorage.getItem('productsInCart')
+    cartItems = JSON.parse(cartItems)
+
+    if(cartItems != null) {
+      if(cartItems[product.id] == undefined) {
+        cartItems = {
+          ...cartItems,
+          [product.id]: product
+        }
+      }
+      cartItems[product.id].inCart += 1 
+    } else {
+      product.inCart = 1 
+      
+      cartItems = {
+        [product.id]: product
+      }
+    }
+    
+    localStorage.setItem("productsInCart", JSON.stringify(cartItems))
+  }
+}
+
+setTimeout(shopSet, 2000)
