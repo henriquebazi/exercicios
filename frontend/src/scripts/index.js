@@ -1,7 +1,9 @@
 const menuButton = document.querySelector('[data-menu="button"]')
+const shopCart = document.querySelector('[data-cart="shopCart"]')
 
 const handleClick = () => {
   menuButton.classList.toggle('active')
+  shopCart.classList.toggle('active')
 }
 
 menuButton.addEventListener('click', handleClick)
@@ -79,11 +81,11 @@ const shopSet = async () => {
     products.push(product)
   })
   
-  console.log(products)
-
   for (let i = 0; i < carts.length; i++) {
     carts[i].addEventListener('click', () => {
       cartNumbers(products[i])
+      totalCost(products[i])
+      onLoadCartNumbers()
     })
   }
 
@@ -92,6 +94,7 @@ const shopSet = async () => {
 
     if (productsNumbers) {
       document.querySelector('.menu .cart').textContent = productsNumbers
+      document.querySelector('.menu .totalCart').style.display = 'flex'
     }
   }
 
@@ -123,7 +126,11 @@ const shopSet = async () => {
           [product.id]: product
         }
       }
-      cartItems[product.id].inCart += 1 
+      if (cartItems[product.id].inCart != null) {
+        cartItems[product.id].inCart += 1
+      } else {
+        cartItems[product.id].inCart = 1
+      }
     } else {
       product.inCart = 1 
       
@@ -133,6 +140,27 @@ const shopSet = async () => {
     }
     
     localStorage.setItem("productsInCart", JSON.stringify(cartItems))
+  }
+
+  const totalCost = ({price}) => {
+    let cartCost = JSON.parse(localStorage.getItem('totalCost'))
+    let priceValue = null
+    let installments = null
+    let installmentValue = null
+
+    if (cartCost != null) {
+      priceValue = cartCost.priceValue + price.value
+      installments = price.installments
+      installmentValue = cartCost.installmentValue + price.installmentValue
+    } else {
+      priceValue = price.value
+      installments = price.installments
+      installmentValue = price.installmentValue
+    }
+
+    const prices = {priceValue, installments, installmentValue}
+
+    localStorage.setItem('totalCost', JSON.stringify(prices))
   }
 }
 
