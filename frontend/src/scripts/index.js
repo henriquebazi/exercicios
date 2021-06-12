@@ -1,9 +1,19 @@
+/* DOM */
 const menuButton = document.querySelector('[data-menu="button"]')
 const shopCart = document.querySelector('[data-cart="shopCart"]')
+const body = document.querySelector('body')
 
 const handleClick = () => {
   menuButton.classList.toggle('active')
   shopCart.classList.toggle('active')
+
+  if (shopCart.classList.contains('active')){
+    body.style.overflowY = 'hidden'
+    shopCart.style.overflowY = 'scroll'
+  } else {
+    body.style.overflowY = 'scroll'
+    shopCart.style.overflowY = 'hidden'
+  }
 }
 
 menuButton.addEventListener('click', handleClick)
@@ -80,30 +90,19 @@ const shopSet = async () => {
   myProducts.forEach(({product}) => {
     products.push(product)
   })
-  
-  for (let i = 0; i < carts.length; i++) {
-    carts[i].addEventListener('click', () => {
+
+  carts.forEach((cart, i) => {
+    cart.addEventListener('click', () => {
       cartNumbers(products[i])
       totalCost(products[i])
       onLoadCartNumbers()
     })
-  }
-
-  const onLoadCartNumbers = () => {
-    let productsNumbers = localStorage.getItem('cartNumbers')
-
-    if (productsNumbers) {
-      document.querySelector('.menu .cart').textContent = productsNumbers
-      document.querySelector('.menu .totalCart').style.display = 'flex'
-    }
-  }
-
-  onLoadCartNumbers()
-
+  })
+ 
   const cartNumbers = product => {
     let productsNumbers = localStorage.getItem('cartNumbers')
     productsNumbers = parseInt(productsNumbers)
-
+    
     if (productsNumbers) {
       localStorage.setItem('cartNumbers', productsNumbers + 1)
       document.querySelector('.menu .cart').textContent = productsNumbers + 1
@@ -111,14 +110,14 @@ const shopSet = async () => {
       localStorage.setItem('cartNumbers', 1)
       document.querySelector('.menu .cart').textContent = 1
     }
-
+    
     setItens(product)
   }
-
+  
   const setItens = product => {
     let cartItems = localStorage.getItem('productsInCart')
     cartItems = JSON.parse(cartItems)
-
+    
     if(cartItems != null) {
       if(cartItems[product.id] == undefined) {
         cartItems = {
@@ -141,13 +140,13 @@ const shopSet = async () => {
     
     localStorage.setItem("productsInCart", JSON.stringify(cartItems))
   }
-
+  
   const totalCost = ({price}) => {
     let cartCost = JSON.parse(localStorage.getItem('totalCost'))
     let priceValue = null
     let installments = null
     let installmentValue = null
-
+    
     if (cartCost != null) {
       priceValue = cartCost.priceValue + price.value
       installments = price.installments
@@ -157,11 +156,90 @@ const shopSet = async () => {
       installments = price.installments
       installmentValue = price.installmentValue
     }
-
+    
     const prices = {priceValue, installments, installmentValue}
-
+    
     localStorage.setItem('totalCost', JSON.stringify(prices))
   }
+  
+  const getCartItems = () => {
+    const cartCost = JSON.parse(localStorage.getItem('totalCost'))
+    const cartItems = JSON.parse(localStorage.getItem('productsInCart'))
+    
+    return [ cartCost, cartItems ]
+  }
+  
+  const cartHtml = () => {
+    const contentDiv = document.querySelector('[data-cart="shopCart"] .content')
+    // contentDiv.innerHTML = ''
+    
+    const [ , cartProducts] = getCartItems() 
+    
+    let productsId = null
+    if(cartProducts != null) {
+      productsId = Object.keys(cartProducts)
+    }
+    
+    if(productsId != null) {
+      productsId.forEach(id => {
+        const productDiv = document.createElement('div')
+        console.log(cartProducts[id])
+        productDiv.classList.add('product-cart')
+        productDiv.innerHTML = `
+        <div class="image-cart">
+        <img src="${cartProducts[id].images[0]}" />
+        </div>
+        <div class="product-cart-info">
+        <h2>${cartProducts[id].name}</h2>
+        <div class="price-cart-info">
+        <div class="price-cart">
+        <p>${cartProducts[id].price.installments}R$ <span>${cartProducts[id].price.installmentValue}</span></p>
+        <p>ou <span>R$ ${cartProducts[id].price.value}</span> à vista</p>
+        </div>
+        </div>
+        </div>
+        <button class="delete">X</button>
+        <div class="inCart">
+          <button class="remove">-</button>
+          <p>1</p>
+          <button class="add">+</button>
+        </div>
+        `
+        
+        contentDiv.appendChild(productDiv)
+      })
+      
+      const deleteButtons = document.querySelectorAll('[data-cart="shopCart"] .product-cart .delete')
+      
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', event => {
+          event.target.parentElement.remove()
+        })
+      })
+    }
+
+  }
+
+  const setTotalCartHtml = () => {
+    const shopTotalDiv = document.querySelector('[data-cart="shopCart"] .shopTotal')
+    // shopTotalDiv.innerHTML = ''
+    
+    const [totalCost ] = getCartItems() 
+  }
+
+  const onLoadCartNumbers = () => {
+    let productsNumbers = localStorage.getItem('cartNumbers')
+
+    if (productsNumbers) {
+      document.querySelector('.menu .cart').textContent = productsNumbers
+      document.querySelector('.menu .totalCart').style.display = 'flex'
+    }
+
+    cartHtml()
+    setTotalCartHtml()
+  }
+
+  onLoadCartNumbers()
 }
 
 setTimeout(shopSet, 2000)

@@ -104,13 +104,90 @@ header .container {
 
 [data-cart="shopCart"] {
   display: none;
-  position: absolute;
-  background-color: #000;
-  color: white;
+  position: fixed;
+  left: 0rem;
+  top: 60px;
+  background-color: #daaf00;
+  width: 100%;
+  height: 80vh;
 }
 
 [data-cart="shopCart"].active {
   display: block;
+}
+
+[data-cart="shopCart"] .product-cart {
+  background-color: #c49d00;
+  margin-top: 1rem;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+}
+
+[data-cart="shopCart"] .image-cart img {
+  width: 9rem;
+  height: 8rem;
+  margin: 1rem 2rem;
+  border: 1px solid #000;
+}
+
+[data-cart="shopCart"] .product-cart-info h2 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: lighter;
+  margin-bottom: 1.5rem;
+}
+
+[data-cart="shopCart"] .price-cart p {
+  font-size: 1.6rem;
+}
+
+[data-cart="shopCart"] .product-cart button.delete {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 2rem;
+  border: none;
+  background-color: unset;
+  cursor: pointer;
+}
+
+[data-cart="shopCart"] .product-cart .inCart {
+  position: absolute;
+  width: 10%;
+  bottom: 2rem;
+  right: 2rem;
+  font-size: 2rem;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+[data-cart="shopCart"] .product-cart .inCart button {
+  font-size: 2rem;
+  border: none;
+  background-color: unset;
+  cursor: pointer;
+}
+
+[data-cart="shopCart"] .shopTotal {
+  text-align: right;
+  margin: 3rem 2rem;
+}
+
+[data-cart="shopCart"] .shopTotal p {
+  font-size: 1.6rem;
+}
+
+[data-cart="shopCart"] .shopTotal p:first-child {
+  padding-bottom: 0.5rem;
+  border-bottom: solid 1px rgb(128, 125, 125);
+}
+
+[data-cart="shopCart"] .shopTotal p:nth-child(2) {
+  margin-top: 0.5rem;
 }
 
 .product-item {
