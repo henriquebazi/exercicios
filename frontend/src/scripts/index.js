@@ -33,7 +33,7 @@ const getHtml = async (url) => {
   products.forEach(product => {
     const { name, images, price } = product.product
     const imagesUrl = images.reduce((acc, image) => {  
-      return acc += `<img src="${image}">`
+      return acc += `<img class="product-images" src="${image}">`
     }, '')  
     
     const html = `
@@ -74,11 +74,29 @@ const setHtmlProducts = async () => {
   }, '')
 
   divProducts.innerHTML = htmlString
+
+  changeImages()
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   setHtmlProducts()
 })
+
+/* Images change */
+const changeImages = () => {
+  const productImages = document.querySelectorAll('.product-images')
+  
+  productImages.forEach(image => {
+    image.addEventListener('click', event => {
+      const imageUrl = event.target.getAttribute('src')
+
+      const coverImage = event.target.parentElement.nextElementSibling.children
+      coverImage[0].src = imageUrl
+      console.log(coverImage[0].src)
+    })
+  })
+}
+
 
 /* Shop Cart */
 const shopSet = async () => {
@@ -165,13 +183,14 @@ const shopSet = async () => {
   const getCartItems = () => {
     const cartCost = JSON.parse(localStorage.getItem('totalCost'))
     const cartItems = JSON.parse(localStorage.getItem('productsInCart'))
+    const cartNumbers = JSON.parse(localStorage.getItem('cartNumbers'))
     
-    return [ cartCost, cartItems ]
+    return [ cartCost, cartItems,  cartNumbers]
   }
   
   const cartHtml = () => {
     const contentDiv = document.querySelector('[data-cart="shopCart"] .content')
-    // contentDiv.innerHTML = ''
+    contentDiv.innerHTML = ''
     
     const [ , cartProducts] = getCartItems() 
     
@@ -183,7 +202,7 @@ const shopSet = async () => {
     if(productsId != null) {
       productsId.forEach(id => {
         const productDiv = document.createElement('div')
-        console.log(cartProducts[id])
+
         productDiv.classList.add('product-cart')
         productDiv.innerHTML = `
         <div class="image-cart">
@@ -222,9 +241,16 @@ const shopSet = async () => {
 
   const setTotalCartHtml = () => {
     const shopTotalDiv = document.querySelector('[data-cart="shopCart"] .shopTotal')
-    // shopTotalDiv.innerHTML = ''
+    shopTotalDiv.innerHTML = ''
     
-    const [totalCost ] = getCartItems() 
+    const [totalCost , , cartNumbers] = getCartItems() 
+ 
+    shopTotalDiv.innerHTML = `
+      <p>Subtotal</p>
+      <p>Itens: ${cartNumbers}</p>
+      <p>${totalCost.installments}x de R$ ${totalCost.installmentValue}</p>
+      <p>ou R$ ${totalCost.priceValue} à vista</p>
+    `
   }
 
   const onLoadCartNumbers = () => {
